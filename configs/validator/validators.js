@@ -27,8 +27,8 @@ const schema = {
     $$strict: true
 }
 
-const registerValidator = v.compile(schema)
+const validateUserRegister = v.compile(schema)
 
 module.exports = {
-    registerValidator
+    validateUserRegister
 }

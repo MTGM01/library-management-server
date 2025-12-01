@@ -1,6 +1,6 @@
 require("../configs/DB/db")
 const usersCollection = require('../schema/userSchema')
-const { registerValidator } = require("../utils/validation")
+const { validateUserRegister } = require("../utils/validation")
 
 const getAll = async () => {
   const db = await connectToDB()
@@ -21,7 +21,7 @@ const checkUserLogin = async (userName, password) => {
 
 const add = async (user) => {
 
-  const validationResult = registerValidator(user)
+  const validationResult = validateUserRegister(user)
   const existedUser = await usersCollection.findOne({
     $or: [
       { userName: user.userName },
