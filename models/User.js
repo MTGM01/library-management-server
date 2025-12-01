@@ -1,15 +1,16 @@
-const { ObjectId } = require("mongodb")
-const { dbConnection } = require("../configs/DB/db.js")
+require("../configs/DB/db")
+const usersCollection = require('../schema/userSchema')
+const { registerValidator } = require("../utils/validation")
 
 const getAll = async () => {
-  const db = await dbConnection()
+  const db = await connectToDB()
   const usersCollection = db.collection("users")
   const users = await usersCollection.find({}).toArray()
   return users
 }
 
 const checkUserLogin = async (userName, password) => {
-  const db = await dbConnection()
+  const db = await connectToDB()
   const usersCollection = db.collection("users")
   const loggedinUser = await usersCollection.findOne({
     userName: { $eq: userName },
@@ -19,40 +20,49 @@ const checkUserLogin = async (userName, password) => {
 }
 
 const add = async (user) => {
-  const db = await dbConnection()
-  const usersCollection = db.collection("users")
+
+  const validationResult = registerValidator(user)
   const existedUser = await usersCollection.findOne({
-    userName: { $eq: user.userName },
+    $or: [
+      { userName: user.userName },
+      { password: user.password },
+      { mobile: user.mobile }
+    ]
   })
+  console.log(existedUser);
 
   if (existedUser) {
     return {
       statusCode: 409,
-      data: { message: "The user data is existed before !" },
+      data: { message: "The User Is Registered Before !" },
     }
-  } else if (!user.userName || !user.password || !user.mobile) {
+  } else if (validationResult !== true) {
+    const errorMessages = validationResult.map((validation) => validation.message)
     return {
       statusCode: 422,
-      data: { message: "The user data is not valid !" },
+      data: { messages: errorMessages },
     }
   } else {
+    const { userName, password, mobile } = user
     const newUser = {
-      ...user,
+      userName,
+      password,
+      mobile,
       crime: 0,
       role: "USER",
       createdAt: new Date(),
       updatedAt: new Date(),
     }
-    await usersCollection.insertOne(newUser)
+    const createUserResult = await usersCollection.create(newUser)
     return {
       statusCode: 201,
-      data: { user: newUser, message: "The user added Successfully" },
+      data: { result: createUserResult, message: "The User Registered Successfully" },
     }
   }
 }
 
 const editCrime = async (user) => {
-  const db = await dbConnection()
+  const db = await connectToDB()
   const usersCollection = db.collection("users")
   const desiredUser = await usersCollection.findOneAndUpdate(
     { _id: { $eq: new ObjectId(user.id) } },
@@ -79,7 +89,7 @@ const editCrime = async (user) => {
 }
 
 const editRole = async (user) => {
-  const db = await dbConnection()
+  const db = await connectToDB()
   const usersCollection = db.collection("users")
   const desiredUser = await usersCollection.findOneAndUpdate(
     { _id: { $eq: new ObjectId(user.id) } },

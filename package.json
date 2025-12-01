@@ -11,7 +11,7 @@
     "ignore": [
       "package.json",
       "node_modules",
-      "test.js"
+      "training-subjects"
     ]
   },
   "keywords": [],
@@ -21,6 +21,7 @@
   "dependencies": {
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "fastest-validator": "^1.19.1",
     "mongoose": "^8.15.1",
     "nodemon": "^3.1.10"
   },

@@ -2,9 +2,7 @@ const UserModel = require("../models/User.js")
 
 const get = async (res) => {
   const allUsers = await UserModel.getAll()
-  res.writeHead(200, { "Content-Type": "application/json" })
-  res.write(JSON.stringify(allUsers))
-  res.end()
+  res.json(allUsers)
 }
 
 const login = async (req, res) => {
@@ -37,19 +35,9 @@ const login = async (req, res) => {
   })
 }
 
-const register = (req, res) => {
-  let user
-  req.on("data", (body) => {
-    user = JSON.parse(body)
-  })
-  req.on("end", async () => {
-    const registerResponse = await UserModel.add(user)
-    res.writeHead(registerResponse.statusCode, {
-      "Content-Type": "application/json",
-    })
-    res.write(JSON.stringify(registerResponse.data))
-    res.end()
-  })
+const register = async (req, res) => {
+  const registerResponse = await UserModel.add(req.body)
+  res.status(registerResponse.statusCode).json(registerResponse)
 }
 
 const setCrime = (req, res) => {
