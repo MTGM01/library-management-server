@@ -1,6 +1,7 @@
 require("../configs/DB/db")
+const { isValidObjectId } = require("mongoose")
 const usersCollection = require('../schema/userSchema')
-const { validateUserRegister } = require("../utils/validation")
+const { validateUserRegister } = require("../configs/validator/validators")
 
 const getAll = async () => {
   const db = await connectToDB()
@@ -29,7 +30,6 @@ const add = async (user) => {
       { mobile: user.mobile }
     ]
   })
-  console.log(existedUser);
 
   if (existedUser) {
     return {
@@ -57,6 +57,34 @@ const add = async (user) => {
     return {
       statusCode: 201,
       data: { result: createUserResult, message: "The User Registered Successfully" },
+    }
+  }
+}
+
+const remove = async (userID) => {
+  const userIDValid = isValidObjectId(userID)
+  if (userIDValid) {
+    const deletedUser = await usersCollection.findByIdAndDelete({ _id: userID })
+    if (!deletedUser) {
+      return {
+        statusCode: 404,
+        data: {
+          message: "The User not Found",
+        }
+      }
+    }
+    return {
+      statusCode: 200,
+      data: {
+        result: deletedUser,
+        message: "The User Logged out Successfully",
+      }
+    }
+  }
+  return {
+    statusCode: 422,
+    data: {
+      message: "The UserID is Invalid",
     }
   }
 }
@@ -121,4 +149,5 @@ module.exports = {
   add,
   editRole,
   editCrime,
+  remove
 }

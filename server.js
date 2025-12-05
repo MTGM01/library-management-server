@@ -27,6 +27,10 @@ app.delete('/lib/books/remove/:id', (req, res) => {
   bookController.remove(req, res)
 })
 
+app.delete('/lib/users/logout/:id', (req, res) => {
+  userController.logout(req, res)
+})
+
 app.post('/lib/books/create', (req, res) => {
   bookController.create(req, res)
 })

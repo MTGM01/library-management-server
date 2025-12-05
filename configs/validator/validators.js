@@ -2,7 +2,7 @@ const Validator = require('fastest-validator')
 
 const v = new Validator()
 
-const schema = {
+const userRegisterSchema = {
     userName: {
         type: 'string',
         required: true,
@@ -27,7 +27,7 @@ const schema = {
     $$strict: true
 }
 
-const validateUserRegister = v.compile(schema)
+const validateUserRegister = v.compile(userRegisterSchema)
 
 module.exports = {
     validateUserRegister

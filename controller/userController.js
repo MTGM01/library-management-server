@@ -1,7 +1,7 @@
-const UserModel = require("../models/User.js")
+const UsersModel = require("../models/User.js")
 
 const get = async (res) => {
-  const allUsers = await UserModel.getAll()
+  const allUsers = await UsersModel.getAll()
   res.json(allUsers)
 }
 
@@ -12,7 +12,7 @@ const login = async (req, res) => {
   })
   req.on("end", async () => {
     const { userName, password } = user
-    const isLogin = await UserModel.checkUserLogin(userName, password)
+    const isLogin = await UsersModel.checkUserLogin(userName, password)
     if (isLogin) {
       res.writeHead(200, { "Content-Type": "application/json" })
       res.write(
@@ -35,8 +35,13 @@ const login = async (req, res) => {
   })
 }
 
+const logout = async (req, res) => {
+  const userDeletionResult = await UsersModel.remove(req.params.id)
+  res.status(userDeletionResult.statusCode).json(userDeletionResult.data)
+}
+
 const register = async (req, res) => {
-  const registerResponse = await UserModel.add(req.body)
+  const registerResponse = await UsersModel.add(req.body)
   res.status(registerResponse.statusCode).json(registerResponse)
 }
 
@@ -46,7 +51,7 @@ const setCrime = (req, res) => {
     user = JSON.parse(body)
   })
   req.on("end", async () => {
-    const userWithUpdatedCrime = await UserModel.editCrime(user)
+    const userWithUpdatedCrime = await UsersModel.editCrime(user)
     res.writeHead(userWithUpdatedCrime.statusCode, {
       "Content-Type": "application/json",
     })
@@ -61,7 +66,7 @@ const updateRole = (req, res) => {
     user = JSON.parse(body)
   })
   req.on("end", async () => {
-    const newUserRole = await UserModel.editRole(user)
+    const newUserRole = await UsersModel.editRole(user)
     res.writeHead(newUserRole.statusCode, {
       "Content-Type": "application/json",
     })
@@ -73,6 +78,7 @@ const updateRole = (req, res) => {
 module.exports = {
   get,
   login,
+  logout,
   register,
   updateRole,
   setCrime,
