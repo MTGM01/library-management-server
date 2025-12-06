@@ -13,9 +13,6 @@ app.use(express.json())
 app.use(express.urlencoded())
 
 app.get('/lib/users', (req, res) => {
-  console.log(req.baseUrl);
-  console.log(req.url);
-
   userController.get(res)
 })
 

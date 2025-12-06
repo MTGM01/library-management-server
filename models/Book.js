@@ -1,5 +1,6 @@
-const { ObjectId } = require("mongodb")
-const { dbConnection } = require("../configs/DB/db.js")
+require("../configs/DB/db")
+const { isValidObjectId } = require("mongoose")
+const booksCollection = require('../schema/bookSchema')
 
 const getAll = async () => {
   const db = await dbConnection()
@@ -8,21 +9,30 @@ const getAll = async () => {
   return books
 }
 
-const removeOne = async (bookID) => {
-  const db = await dbConnection()
-  const booksCollection = db.collection("books")
-  const removedBook = await booksCollection.findOneAndDelete({
-    _id: { $eq: new ObjectId(bookID) },
-  })
-  if (removedBook) {
+const remove = async (bookID) => {
+  const bookIDValid = isValidObjectId(bookID)
+  if (bookIDValid) {
+    const deletedBook = await booksCollection.findByIdAndDelete({ _id: bookID })
+    if (!deletedBook) {
+      return {
+        statusCode: 404,
+        data: {
+          message: "The Book not Found",
+        }
+      }
+    }
     return {
       statusCode: 200,
-      data: { removedBook, message: "Book Removed Successfully" },
+      data: {
+        result: deletedBook,
+        message: "The Book Removed Successfully",
+      }
     }
-  } else {
-    return {
-      statusCode: 404,
-      data: { message: "The Book Was not Found !" },
+  }
+  return {
+    statusCode: 422,
+    data: {
+      message: "The BookID is Invalid",
     }
   }
 }
@@ -71,7 +81,7 @@ const edit = async (book) => {
 
 module.exports = {
   getAll,
-  removeOne,
+  remove,
   createOne,
   edit,
 }
