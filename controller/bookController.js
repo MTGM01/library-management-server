@@ -12,8 +12,8 @@ const remove = async (req, res) => {
 }
 
 const create = async (req, res) => {
-  let book = req.body
-  const createdBook = await BooksModel.createOne(book)
+  let newBook = req.body
+  const createdBook = await BooksModel.create(newBook)
   res.status(createdBook.statusCode).json(createdBook.data)
 }
 

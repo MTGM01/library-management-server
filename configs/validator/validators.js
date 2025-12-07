@@ -27,8 +27,26 @@ const userRegisterSchema = {
     $$strict: true
 }
 
+const addnewBookSchema = {
+    title: {
+        type: 'string',
+        required: true,
+    },
+    author: {
+        type: 'string',
+        required: true,
+    },
+    price: {
+        type: 'number',
+        required: true,
+    },
+    $$strict: true
+}
+
 const validateUserRegister = v.compile(userRegisterSchema)
+const validateAddedBook = v.compile(addnewBookSchema)
 
 module.exports = {
-    validateUserRegister
+    validateUserRegister,
+    validateAddedBook
 }

@@ -1,6 +1,7 @@
 require("../configs/DB/db")
 const { isValidObjectId } = require("mongoose")
 const booksCollection = require('../schema/bookSchema')
+const { validateAddedBook } = require("../configs/validator/validators")
 
 const getAll = async () => {
   const books = await booksCollection.find({})
@@ -35,9 +36,17 @@ const remove = async (bookID) => {
   }
 }
 
-const createOne = async (book) => {
-  const db = await dbConnection()
-  const booksCollection = db.collection("books")
+const create = async (book) => {
+  const validationResult = validateAddedBook(book)
+  if (validationResult !== true) {
+    return {
+      statusCode: 422,
+      data: {
+        result: validationResult,
+        message: "The Book Data is Invalid",
+      },
+    }
+  }
   const newBook = await booksCollection.insertOne({
     ...book,
     isReserved: false,
@@ -47,8 +56,8 @@ const createOne = async (book) => {
   return {
     statusCode: 201,
     data: {
-      createdBook: newBook,
-      message: "The Book Added Successfully",
+      result: newBook,
+      message: "The Book Added to Library Successfully",
     },
   }
 }
@@ -80,6 +89,6 @@ const edit = async (book) => {
 module.exports = {
   getAll,
   remove,
-  createOne,
+  create,
   edit,
 }
