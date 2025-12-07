@@ -1,12 +1,8 @@
-const BooksModel = require("../models/Book.js")
-
-// Develop Book Controller with ExpressJs
+const BooksModel = require("../models/Book")
 
 const get = async (res) => {
   const allBooks = await BooksModel.getAll()
-  res.writeHead(200, { "Content-Type": "application/json" })
-  res.write(JSON.stringify(allBooks))
-  res.end()
+  res.json(allBooks)
 }
 
 const remove = async (req, res) => {

@@ -3,9 +3,7 @@ const { isValidObjectId } = require("mongoose")
 const booksCollection = require('../schema/bookSchema')
 
 const getAll = async () => {
-  const db = await dbConnection()
-  const booksCollection = db.collection("books")
-  const books = await booksCollection.find({}).toArray()
+  const books = await booksCollection.find({})
   return books
 }
 

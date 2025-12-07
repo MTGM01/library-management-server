@@ -12,6 +12,8 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded())
 
+// Users api
+
 app.get('/lib/users', (req, res) => {
   userController.get(res)
 })
@@ -20,12 +22,18 @@ app.post('/lib/users/register', (req, res) => {
   userController.register(req, res)
 })
 
-app.delete('/lib/books/remove/:id', (req, res) => {
-  bookController.remove(req, res)
-})
-
 app.delete('/lib/users/logout/:id', (req, res) => {
   userController.logout(req, res)
+})
+
+// Books api
+
+app.get('/lib/books', (req, res) => {
+  bookController.get(res)
+})
+
+app.delete('/lib/books/remove/:id', (req, res) => {
+  bookController.remove(req, res)
 })
 
 app.post('/lib/books/create', (req, res) => {

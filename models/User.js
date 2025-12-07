@@ -4,9 +4,7 @@ const usersCollection = require('../schema/userSchema')
 const { validateUserRegister } = require("../configs/validator/validators")
 
 const getAll = async () => {
-  const db = await connectToDB()
-  const usersCollection = db.collection("users")
-  const users = await usersCollection.find({}).toArray()
+  const users = await usersCollection.find({})
   return users
 }
 
