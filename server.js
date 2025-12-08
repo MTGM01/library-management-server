@@ -40,8 +40,8 @@ app.post('/lib/books/create', (req, res) => {
   bookController.create(req, res)
 })
 
-app.get('/products', (req, res) => {
-  res.send('Welcome to the Products page')
+app.put('/lib/books/update/:id', (req, res) => {
+  bookController.update(req, res)
 })
 
 app.listen(process.env.PORT, (err) => {

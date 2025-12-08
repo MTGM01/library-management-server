@@ -17,17 +17,9 @@ const create = async (req, res) => {
   res.status(createdBook.statusCode).json(createdBook.data)
 }
 
-const update = (req, res) => {
-  let book
-  req.on("data", (body) => {
-    book = JSON.parse(body)
-  })
-  req.on("end", async () => {
-    const updatedBook = await BooksModel.edit(book)
-    res.writeHead(updatedBook.statusCode, { "Content-Type": "application/json" })
-    res.write(JSON.stringify(updatedBook.data))
-    res.end()
-  })
+const update = async (req, res) => {
+  const updatedBook = await BooksModel.edit(req.body, req.params.id)
+  res.status(updatedBook.statusCode).json(updatedBook.data)
 }
 
 module.exports = {

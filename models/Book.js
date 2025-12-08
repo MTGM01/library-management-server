@@ -62,26 +62,26 @@ const create = async (book) => {
   }
 }
 
-const edit = async (book) => {
-  const db = await dbConnection()
-  const booksCollection = db.collection("books")
-  const editedBook = await booksCollection.findOneAndUpdate(
-    { _id: { $eq: new ObjectId(book.id) } },
-    {
-      $set: {
-        ...book,
-      },
+const edit = async (book, bookID) => {
+  const bookIDValid = isValidObjectId(bookID)
+  if (bookIDValid) {
+    const editedBook = await booksCollection.findByIdAndUpdate({ _id: bookID }, { $set: { ...book, createdAt: new Date(), updatedAt: new Date() } })
+    if (!editedBook) {
+      return {
+        statusCode: 404,
+        data: { message: "The Book was not found !" },
+      }
     }
-  )
-  if (editedBook) {
     return {
       statusCode: 200,
-      data: { editedBook, message: "The Book Updated Successfully" },
+      data: { result: editedBook, message: "The Book Updated Successfully" },
     }
   } else {
     return {
-      statusCode: 404,
-      data: { message: "The Book was not found !" },
+      statusCode: 422,
+      data: {
+        message: "The BookID is Invalid",
+      }
     }
   }
 }
