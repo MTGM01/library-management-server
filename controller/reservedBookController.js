@@ -8,14 +8,10 @@ const handleReservation = async (req, res) => {
 }
 
 const deliver = async (req, res) => {
-  const parsedUrl = url.parse(req.url, true)
-  const bookID = parsedUrl.query.bookID
-  const removedReservedBook = await ReservedBooksModel.remove(bookID)
-  res.writeHead(removedReservedBook.statusCode, {
-    "Content-Type": "application/json",
-  })
-  res.write(JSON.stringify(removedReservedBook.data))
-  res.end()
+  const bookID = req.query.bookID
+  const userID = req.query.userID
+  const removedReservedBook = await ReservedBooksModel.remove(userID, bookID)
+  res.status(removedReservedBook.statusCode).json(removedReservedBook.data)
 }
 
 module.exports = {

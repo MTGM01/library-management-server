@@ -62,6 +62,10 @@ app.post('/lib/reservedBooks/reserve', (req, res) => {
   reservedBookController.handleReservation(req, res)
 })
 
+app.delete('/lib/reservedBooks/delivery', (req, res) => {
+  reservedBookController.deliver(req, res)
+})
+
 app.listen(process.env.PORT, (err) => {
   if (err) throw err
   console.log(`Starting Server on Port ${process.env.PORT}`)
