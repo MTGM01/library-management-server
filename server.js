@@ -30,6 +30,10 @@ app.put('/lib/users/setCrime', (req, res) => {
   userController.setCrime(req, res)
 })
 
+app.put('/lib/users/upgradeRole', (req, res) => {
+  userController.updateRole(req, res)
+})
+
 app.delete('/lib/users/logout/', (req, res) => {
   userController.logout(req, res)
 })

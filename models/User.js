@@ -66,8 +66,8 @@ const add = async (user) => {
   }
 }
 
-const remove = async (user) => {
-  const deletedUser = await usersCollection.findOneAndDelete({ userName: user.userName })
+const remove = async ({ userName }) => {
+  const deletedUser = await usersCollection.findOneAndDelete({ userName })
   if (!deletedUser) {
     return {
       statusCode: 404,
@@ -85,22 +85,25 @@ const remove = async (user) => {
   }
 }
 
-const editCrime = async (user) => {
-  const userIDValid = isValidObjectId(user.id)
+const editCrime = async ({ id, crime }) => {
+  const userIDValid = isValidObjectId(id)
   if (userIDValid) {
     const desiredUser = await usersCollection.findByIdAndUpdate(
-      { _id: user.id },
+      { _id: id },
       {
         $set: {
-          crime: user.crime,
+          crime,
         },
+        $currentDate: {
+          updatedAt: 1
+        }
       }
     )
     if (desiredUser) {
       return {
         statusCode: 200,
         data: {
-          user: desiredUser,
+          result: desiredUser,
           message: "The User Crime Setted Successfully",
         }
       }
@@ -119,29 +122,39 @@ const editCrime = async (user) => {
   }
 }
 
-const editRole = async (user) => {
-  const db = await connectToDB()
-  const usersCollection = db.collection("users")
-  const desiredUser = await usersCollection.findOneAndUpdate(
-    { _id: { $eq: new ObjectId(user.id) } },
-    {
-      $set: {
-        role: user.role,
-      },
+const editRole = async ({ id, role }) => {
+  const userIDValid = isValidObjectId(id)
+  if (userIDValid) {
+    const desiredUser = await usersCollection.findByIdAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          role,
+        },
+        $currentDate: {
+          updatedAt: 1
+        }
+      }
+    )
+    if (desiredUser) {
+      return {
+        statusCode: 200,
+        data: {
+          result: desiredUser,
+          message: "The User Role Updated Successfully",
+        }
+      }
     }
-  )
-  if (desiredUser) {
     return {
-      statusCode: 200,
+      statusCode: 404,
       data: {
-        user: desiredUser,
-        message: "The user role updated Successfully",
-      },
+        message: "The User not Found",
+      }
     }
   } else {
     return {
       statusCode: 422,
-      data: { message: "The user is not existed !" },
+      data: { message: "The UserID Is Invalid !" },
     }
   }
 }

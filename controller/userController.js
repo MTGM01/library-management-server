@@ -27,19 +27,9 @@ const setCrime = async (req, res) => {
   res.status(userWithUpdatedCrime.statusCode).json(userWithUpdatedCrime.data)
 }
 
-const updateRole = (req, res) => {
-  let user
-  req.on("data", (body) => {
-    user = JSON.parse(body)
-  })
-  req.on("end", async () => {
-    const newUserRole = await UsersModel.editRole(user)
-    res.writeHead(newUserRole.statusCode, {
-      "Content-Type": "application/json",
-    })
-    res.write(JSON.stringify(newUserRole.data))
-    res.end()
-  })
+const updateRole = async (req, res) => {
+  const newUserRole = await UsersModel.editRole(req.body)
+  res.status(newUserRole.statusCode).json(newUserRole.data)
 }
 
 module.exports = {
