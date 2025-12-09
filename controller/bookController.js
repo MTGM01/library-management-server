@@ -1,4 +1,4 @@
-const BooksModel = require("../models/Book")
+const BooksModel = require("../models/Books")
 
 const get = async (res) => {
   const allBooks = await BooksModel.getAll()

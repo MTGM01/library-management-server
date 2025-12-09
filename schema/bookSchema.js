@@ -14,7 +14,7 @@ const bookSchema = {
         required: true,
     },
     isReserved: {
-        type: Number,
+        type: Boolean,
         required: true,
         default: false,
     },

@@ -12,7 +12,7 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded())
 
-// Users api
+// Users Api
 
 app.get('/lib/users', (req, res) => {
   userController.get(res)
@@ -38,7 +38,7 @@ app.delete('/lib/users/logout/', (req, res) => {
   userController.logout(req, res)
 })
 
-// Books api
+// Books Api
 
 app.get('/lib/books', (req, res) => {
   bookController.get(res)
@@ -54,6 +54,12 @@ app.post('/lib/books/create', (req, res) => {
 
 app.put('/lib/books/update/:id', (req, res) => {
   bookController.update(req, res)
+})
+
+// Reserved Books Api
+
+app.post('/lib/reservedBooks/reserve', (req, res) => {
+  reservedBookController.handleReservation(req, res)
 })
 
 app.listen(process.env.PORT, (err) => {

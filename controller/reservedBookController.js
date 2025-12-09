@@ -1,26 +1,16 @@
 const url = require("url")
-const ReservedBookModel = require("../models/ReservedBook.js")
+const ReservedBooksModel = require("../models/ReservedBooks")
 
-const handleReservation = (req, res) => {
-  let reqBody
-  req.on("data", (body) => {
-    reqBody = JSON.parse(body)
-  })
-  req.on("end", async () => {
-    const { userID, bookID } = reqBody
-    const bookReservationObj = await ReservedBookModel.reserve(userID, bookID)
-    res.writeHead(bookReservationObj.statusCode, {
-      "Content-Type": "application/json",
-    })
-    res.write(JSON.stringify(bookReservationObj.data))
-    res.end()
-  })
+const handleReservation = async (req, res) => {
+  const { userID, bookID } = req.body
+  const bookReservationObj = await ReservedBooksModel.reserve(userID, bookID)
+  res.status(bookReservationObj.statusCode).json(bookReservationObj.data)
 }
 
 const deliver = async (req, res) => {
   const parsedUrl = url.parse(req.url, true)
   const bookID = parsedUrl.query.bookID
-  const removedReservedBook = await ReservedBookModel.remove(bookID)
+  const removedReservedBook = await ReservedBooksModel.remove(bookID)
   res.writeHead(removedReservedBook.statusCode, {
     "Content-Type": "application/json",
   })
