@@ -6,37 +6,14 @@ const get = async (res) => {
 }
 
 const login = async (req, res) => {
-  let user
-  req.on("data", (body) => {
-    user = JSON.parse(body)
-  })
-  req.on("end", async () => {
-    const { userName, password } = user
-    const isLogin = await UsersModel.checkUserLogin(userName, password)
-    if (isLogin) {
-      res.writeHead(200, { "Content-Type": "application/json" })
-      res.write(
-        JSON.stringify({
-          data: {
-            loggedinUser: isLogin,
-            message: "You are logged in successfully",
-          },
-        })
-      )
-    } else {
-      res.writeHead(401, { "Content-Type": "application/json" })
-      res.write(
-        JSON.stringify({
-          data: { message: "The user is not authorized !" },
-        })
-      )
-    }
-    res.end()
-  })
+  const user = req.body
+  const { userName, password } = user
+  const loginResult = await UsersModel.checkUserLogin(userName, password)
+  res.status(loginResult.statusCode).json(loginResult.data)
 }
 
 const logout = async (req, res) => {
-  const userDeletionResult = await UsersModel.remove(req.params.id)
+  const userDeletionResult = await UsersModel.remove(req.body)
   res.status(userDeletionResult.statusCode).json(userDeletionResult.data)
 }
 

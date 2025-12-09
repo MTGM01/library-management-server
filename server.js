@@ -18,11 +18,15 @@ app.get('/lib/users', (req, res) => {
   userController.get(res)
 })
 
+app.post('/lib/users/login', (req, res) => {
+  userController.login(req, res)
+})
+
 app.post('/lib/users/register', (req, res) => {
   userController.register(req, res)
 })
 
-app.delete('/lib/users/logout/:id', (req, res) => {
+app.delete('/lib/users/logout/', (req, res) => {
   userController.logout(req, res)
 })
 
