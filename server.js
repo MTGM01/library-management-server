@@ -26,6 +26,10 @@ app.post('/lib/users/register', (req, res) => {
   userController.register(req, res)
 })
 
+app.put('/lib/users/setCrime', (req, res) => {
+  userController.setCrime(req, res)
+})
+
 app.delete('/lib/users/logout/', (req, res) => {
   userController.logout(req, res)
 })

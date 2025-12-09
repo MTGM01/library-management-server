@@ -22,19 +22,9 @@ const register = async (req, res) => {
   res.status(registerResponse.statusCode).json(registerResponse)
 }
 
-const setCrime = (req, res) => {
-  let user
-  req.on("data", (body) => {
-    user = JSON.parse(body)
-  })
-  req.on("end", async () => {
-    const userWithUpdatedCrime = await UsersModel.editCrime(user)
-    res.writeHead(userWithUpdatedCrime.statusCode, {
-      "Content-Type": "application/json",
-    })
-    res.write(JSON.stringify(userWithUpdatedCrime.data))
-    res.end()
-  })
+const setCrime = async (req, res) => {
+  const userWithUpdatedCrime = await UsersModel.editCrime(req.body)
+  res.status(userWithUpdatedCrime.statusCode).json(userWithUpdatedCrime.data)
 }
 
 const updateRole = (req, res) => {

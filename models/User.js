@@ -27,7 +27,6 @@ const checkUserLogin = async (userName, password) => {
 }
 
 const add = async (user) => {
-
   const validationResult = validateUserRegister(user)
   const existedUser = await usersCollection.findOne({
     $or: [
@@ -87,28 +86,35 @@ const remove = async (user) => {
 }
 
 const editCrime = async (user) => {
-  const db = await connectToDB()
-  const usersCollection = db.collection("users")
-  const desiredUser = await usersCollection.findOneAndUpdate(
-    { _id: { $eq: new ObjectId(user.id) } },
-    {
-      $set: {
-        crime: user.crime,
-      },
+  const userIDValid = isValidObjectId(user.id)
+  if (userIDValid) {
+    const desiredUser = await usersCollection.findByIdAndUpdate(
+      { _id: user.id },
+      {
+        $set: {
+          crime: user.crime,
+        },
+      }
+    )
+    if (desiredUser) {
+      return {
+        statusCode: 200,
+        data: {
+          user: desiredUser,
+          message: "The User Crime Setted Successfully",
+        }
+      }
     }
-  )
-  if (desiredUser) {
     return {
-      statusCode: 200,
+      statusCode: 404,
       data: {
-        user: desiredUser,
-        message: "The user crime setted Successfully",
-      },
+        message: "The User not Found",
+      }
     }
   } else {
     return {
       statusCode: 422,
-      data: { message: "The user is not existed !" },
+      data: { message: "The UserID Is Invalid !" },
     }
   }
 }
