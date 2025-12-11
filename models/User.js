@@ -4,7 +4,7 @@ const usersCollection = require('../schema/user')
 const { validateUserRegister } = require("../configs/validator/validators")
 
 const getAll = async () => {
-  const users = await usersCollection.find({}, '-createdAt -updatedAt -_id')
+  const users = await usersCollection.find({}, '-createdAt -updatedAt -_id -__v')
   return users
 }
 
@@ -34,7 +34,7 @@ const add = async (user) => {
       { password: user.password },
       { mobile: user.mobile }
     ]
-  }).select('userName password mobile')
+  })
 
   if (existedUser) {
     return {

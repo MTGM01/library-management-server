@@ -19,7 +19,7 @@ const logout = async (req, res) => {
 
 const register = async (req, res) => {
   const registerResponse = await UsersModel.add(req.body)
-  res.status(registerResponse.statusCode).json(registerResponse)
+  res.status(registerResponse.statusCode).json(registerResponse.data)
 }
 
 const setCrime = async (req, res) => {
