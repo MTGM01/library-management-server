@@ -4,7 +4,7 @@ const usersCollection = require('../schema/user')
 const { validateUserRegister } = require("../configs/validator/validators")
 
 const getAll = async () => {
-  const users = await usersCollection.find({})
+  const users = await usersCollection.find({}, '-createdAt -updatedAt -_id')
   return users
 }
 
@@ -34,7 +34,7 @@ const add = async (user) => {
       { password: user.password },
       { mobile: user.mobile }
     ]
-  })
+  }).select('userName password mobile')
 
   if (existedUser) {
     return {
@@ -67,7 +67,7 @@ const add = async (user) => {
 }
 
 const remove = async ({ userName }) => {
-  const deletedUser = await usersCollection.findOneAndDelete({ userName })
+  const deletedUser = await usersCollection.findOneAndDelete({ userName }).select('userName password mobile')
   if (!deletedUser) {
     return {
       statusCode: 404,
