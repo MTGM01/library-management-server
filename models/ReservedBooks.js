@@ -1,8 +1,8 @@
 require("../configs/DB/db")
 const { isValidObjectId } = require("mongoose")
-const booksCollection = require('../schema/bookSchema')
-const usersCollection = require('../schema/userSchema')
-const reservedBooksCollection = require('../schema/reservedBookSchema')
+const booksCollection = require('../schema/book')
+const usersCollection = require('../schema/user')
+const reservedBooksCollection = require('../schema/reservedBook')
 
 const reserve = async (userID, bookID) => {
   const userIDValid = isValidObjectId(userID)
