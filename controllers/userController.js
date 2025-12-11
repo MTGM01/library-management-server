@@ -1,6 +1,6 @@
 const UsersModel = require("../models/User.js")
 
-const get = async (res) => {
+const get = async (req, res) => {
   const allUsers = await UsersModel.getAll()
   res.json(allUsers)
 }

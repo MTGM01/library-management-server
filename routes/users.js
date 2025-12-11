@@ -2,28 +2,16 @@ const express = require('express')
 const userController = require("../controllers/userController")
 const usersRouter = express.Router()
 
-usersRouter.get('', (req, res) => {
-    userController.get(res)
-})
+usersRouter.get('', userController.get)
 
-usersRouter.post('/login', (req, res) => {
-    userController.login(req, res)
-})
+usersRouter.post('/login', userController.login)
 
-usersRouter.post('/register', (req, res) => {
-    userController.register(req, res)
-})
+usersRouter.post('/register', userController.register)
 
-usersRouter.put('/setCrime', (req, res) => {
-    userController.setCrime(req, res)
-})
+usersRouter.put('/setCrime', userController.setCrime)
 
-usersRouter.put('/upgradeRole', (req, res) => {
-    userController.updateRole(req, res)
-})
+usersRouter.put('/upgradeRole', userController.updateRole)
 
-usersRouter.delete('/logout/', (req, res) => {
-    userController.logout(req, res)
-})
+usersRouter.delete('/logout', userController.logout)
 
 module.exports = usersRouter
