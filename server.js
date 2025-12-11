@@ -1,42 +1,20 @@
 require('dotenv').config()
 const express = require('express')
-const userController = require("./controller/userController.js")
-const bookController = require("./controller/bookController.js")
-const reservedBookController = require("./controller/reservedBookController.js")
+const usersRouter = require('./routes/users.js')
+const bookController = require("./controllers/bookController.js")
+const reservedBookController = require("./controllers/reservedBookController.js")
 
 // Running and Create Server using ExpressJs
 
 //create server
 const app = express()
 
+// define request body
 app.use(express.json())
 app.use(express.urlencoded())
 
 // Users Api
-
-app.get('/lib/users', (req, res) => {
-  userController.get(res)
-})
-
-app.post('/lib/users/login', (req, res) => {
-  userController.login(req, res)
-})
-
-app.post('/lib/users/register', (req, res) => {
-  userController.register(req, res)
-})
-
-app.put('/lib/users/setCrime', (req, res) => {
-  userController.setCrime(req, res)
-})
-
-app.put('/lib/users/upgradeRole', (req, res) => {
-  userController.updateRole(req, res)
-})
-
-app.delete('/lib/users/logout/', (req, res) => {
-  userController.logout(req, res)
-})
+app.use('/lib/users', usersRouter)
 
 // Books Api
 
