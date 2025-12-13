@@ -4,8 +4,33 @@ const booksCollection = require('../schema/book')
 const { validateAddedBook } = require("../configs/validator/validators")
 
 const getAll = async () => {
-  const books = await booksCollection.find({})
+  const books = await booksCollection.find({}).lean()
   return books
+}
+
+const getOne = async (bookID) => {
+  const bookIDValid = isValidObjectId(bookID)
+  if (bookIDValid) {
+    const book = await booksCollection.findById({ _id: bookID }, '-createdAt -updatedAt -_id')
+    if (!book) {
+      return {
+        statusCode: 404,
+        data: {
+          message: "The Book not Found",
+        }
+      }
+    }
+    return {
+      statusCode: 200,
+      data: { result: book }
+    }
+  }
+  return {
+    statusCode: 422,
+    data: {
+      message: "The BookID is Invalid",
+    }
+  }
 }
 
 const remove = async (bookID) => {
@@ -88,6 +113,7 @@ const edit = async (book, bookID) => {
 
 module.exports = {
   getAll,
+  getOne,
   remove,
   create,
   edit,
