@@ -4,7 +4,7 @@ const booksCollection = require('../schema/book')
 const { validateAddedBook } = require("../configs/validator/validators")
 
 const getAll = async () => {
-  const books = await booksCollection.find({}).lean()
+  const books = await booksCollection.find({}, '-createdAt -updatedAt -_id -__v').lean()
   return { data: { result: books } }
 }
 

@@ -4,6 +4,36 @@ const booksCollection = require('../schema/book')
 const usersCollection = require('../schema/user')
 const reservedBooksCollection = require('../schema/reservedBook')
 
+const getAll = async () => {
+  const reservedBooks = await reservedBooksCollection.find({}, '-createdAt -updatedAt -_id -__v').lean()
+  return { data: { result: reservedBooks } }
+}
+
+const getOne = async (reservedBookID) => {
+  const reservedBookIDValid = isValidObjectId(reservedBookID)
+  if (reservedBookIDValid) {
+    const reservedBook = await reservedBooksCollection.findById({ _id: reservedBookID }, '-createdAt -updatedAt -_id -__v')
+    if (!reservedBook) {
+      return {
+        statusCode: 404,
+        data: {
+          message: "The Reserved Book not Found",
+        }
+      }
+    }
+    return {
+      statusCode: 200,
+      data: { result: reservedBook }
+    }
+  }
+  return {
+    statusCode: 422,
+    data: {
+      message: "The Reserved BookID is Invalid",
+    }
+  }
+}
+
 const reserve = async (userID, bookID) => {
   const userIDValid = isValidObjectId(userID)
   const bookIDValid = isValidObjectId(bookID)
@@ -48,7 +78,7 @@ const reserve = async (userID, bookID) => {
 const remove = async (userID, bookID) => {
   const userIDValid = isValidObjectId(userID)
   const bookIDValid = isValidObjectId(bookID)
-  if (userID && bookIDValid) {
+  if (userIDValid && bookIDValid) {
     const deliveredBook = await booksCollection.findOneAndUpdate(
       { _id: bookID },
       {
@@ -79,6 +109,8 @@ const remove = async (userID, bookID) => {
 }
 
 module.exports = {
+  getAll,
+  getOne,
   reserve,
   remove,
 }
