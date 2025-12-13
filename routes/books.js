@@ -7,8 +7,6 @@ booksRouter.get('', bookController.get)
 
 booksRouter.route('/:id').delete(bookController.remove).put(bookController.update)
 
-booksRouter.post('/create', (req, res) => {
-    bookController.create(req, res)
-})
+booksRouter.post('/create', bookController.create)
 
 module.exports = booksRouter
