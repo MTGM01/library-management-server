@@ -4,8 +4,33 @@ const usersCollection = require('../schema/user')
 const { validateUserRegister } = require("../configs/validator/validators")
 
 const getAll = async () => {
-  const users = await usersCollection.find({}, '-createdAt -updatedAt -_id -__v')
-  return users
+  const users = await usersCollection.find({}, '-createdAt -updatedAt -_id -__v').lean()
+  return { data: { result: users } }
+}
+
+const getOne = async (userID) => {
+  const userIDValid = isValidObjectId(userID)
+  if (userIDValid) {
+    const user = await usersCollection.findById({ _id: userID }, '-createdAt -updatedAt -_id -__v')
+    if (!user) {
+      return {
+        statusCode: 404,
+        data: {
+          message: "The User not Found",
+        }
+      }
+    }
+    return {
+      statusCode: 200,
+      data: { result: user }
+    }
+  }
+  return {
+    statusCode: 422,
+    data: {
+      message: "The UserID is Invalid",
+    }
+  }
 }
 
 const checkUserLogin = async (userName, password) => {
@@ -161,6 +186,7 @@ const editRole = async ({ id, role }) => {
 
 module.exports = {
   getAll,
+  getOne,
   checkUserLogin,
   add,
   editRole,

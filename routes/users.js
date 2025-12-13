@@ -2,7 +2,9 @@ const express = require('express')
 const userController = require("../controllers/userController")
 const usersRouter = express.Router()
 
-usersRouter.get('', userController.get)
+usersRouter.get('', userController.getAll)
+
+usersRouter.get('/:id', userController.getOne)
 
 usersRouter.post('/login', userController.login)
 

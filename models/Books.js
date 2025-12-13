@@ -5,13 +5,13 @@ const { validateAddedBook } = require("../configs/validator/validators")
 
 const getAll = async () => {
   const books = await booksCollection.find({}).lean()
-  return books
+  return { data: { result: books } }
 }
 
 const getOne = async (bookID) => {
   const bookIDValid = isValidObjectId(bookID)
   if (bookIDValid) {
-    const book = await booksCollection.findById({ _id: bookID }, '-createdAt -updatedAt -_id')
+    const book = await booksCollection.findById({ _id: bookID }, '-createdAt -updatedAt -_id -__v')
     if (!book) {
       return {
         statusCode: 404,

@@ -1,14 +1,14 @@
 const BooksModel = require("../models/Books")
 
+const getAll = async (req, res) => {
+  const allBooks = await BooksModel.getAll()
+  res.json(allBooks.data)
+}
+
 const getOne = async (req, res) => {
   const { id } = req.params
   const book = await BooksModel.getOne(id)
   res.status(book.statusCode).json(book.data)
-}
-
-const getAll = async (req, res) => {
-  const allBooks = await BooksModel.getAll()
-  res.status(allBooks.statusCode).json(allBooks.data)
 }
 
 const remove = async (req, res) => {
@@ -29,8 +29,8 @@ const update = async (req, res) => {
 }
 
 module.exports = {
-  getOne,
   getAll,
+  getOne,
   remove,
   create,
   update,

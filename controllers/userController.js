@@ -1,8 +1,14 @@
 const UsersModel = require("../models/User.js")
 
-const get = async (req, res) => {
+const getAll = async (req, res) => {
   const allUsers = await UsersModel.getAll()
-  res.json(allUsers)
+  res.json(allUsers.data)
+}
+
+const getOne = async (req, res) => {
+  const { id } = req.params
+  const user = await UsersModel.getOne(id)
+  res.status(user.statusCode).json(user.data)
 }
 
 const login = async (req, res) => {
@@ -33,7 +39,8 @@ const updateRole = async (req, res) => {
 }
 
 module.exports = {
-  get,
+  getAll,
+  getOne,
   login,
   logout,
   register,
