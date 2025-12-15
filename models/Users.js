@@ -9,27 +9,10 @@ const getAll = async () => {
 }
 
 const getOne = async (userID) => {
-  const userIDValid = isValidObjectId(userID)
-  if (userIDValid) {
-    const user = await usersCollection.findById({ _id: userID }, '-createdAt -updatedAt -_id -__v')
-    if (!user) {
-      return {
-        statusCode: 404,
-        data: {
-          message: "The User not Found",
-        }
-      }
-    }
-    return {
-      statusCode: 200,
-      data: { result: user }
-    }
-  }
+  const user = await usersCollection.findById({ _id: userID }, '-createdAt -updatedAt -_id -__v')
   return {
-    statusCode: 422,
-    data: {
-      message: "The UserID is Invalid",
-    }
+    statusCode: 200,
+    data: { result: user }
   }
 }
 
