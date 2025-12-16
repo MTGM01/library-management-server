@@ -12,7 +12,7 @@ const getOne = async (userID) => {
   const user = await usersCollection.findById({ _id: userID }, '-createdAt -updatedAt -_id -__v')
   return {
     statusCode: 200,
-    data: { result: user }
+    data: { result: user, message: 'ok' }
   }
 }
 
