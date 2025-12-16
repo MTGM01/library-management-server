@@ -1,5 +1,6 @@
 require('dotenv').config()
 const express = require('express')
+const morgan = require('morgan')
 const usersRouter = require('./routes/users.js')
 const booksRouter = require("./routes/books.js")
 const reservedBooksRouter = require("./routes/reservedBooks.js")
@@ -12,6 +13,9 @@ const app = express()
 // define request body
 app.use(express.json())
 app.use(express.urlencoded())
+
+// server logger
+app.use(morgan('dev'))
 
 // Users Api
 app.use('/lib/users', usersRouter)

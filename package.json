@@ -23,6 +23,7 @@
     "express": "^5.1.0",
     "fastest-validator": "^1.19.1",
     "mongoose": "^8.15.1",
+    "morgan": "^1.10.1",
     "nodemon": "^3.1.10"
   },
   "devDependencies": {
