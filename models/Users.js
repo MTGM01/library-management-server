@@ -74,16 +74,8 @@ const add = async (user) => {
   }
 }
 
-const remove = async ({ userName }) => {
-  const deletedUser = await usersCollection.findOneAndDelete({ userName }).select('userName password mobile')
-  if (!deletedUser) {
-    return {
-      statusCode: 404,
-      data: {
-        message: "The User not Found",
-      }
-    }
-  }
+const remove = async ({ id }) => {
+  const deletedUser = await usersCollection.findByIdAndDelete({ _id: id }).select('userName password mobile')
   return {
     statusCode: 200,
     data: {
@@ -174,5 +166,5 @@ module.exports = {
   add,
   editRole,
   editCrime,
-  remove
+  remove,
 }

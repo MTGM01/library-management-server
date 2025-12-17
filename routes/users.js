@@ -2,6 +2,7 @@ const express = require('express')
 const userController = require("../controllers/userController")
 const usersRouter = express.Router()
 const validateAdmin = require('../middlewares/isAdmin')
+const validateDeletion = require('../middlewares/validateUserDeletion')
 
 // usersRouter.use(validateAdmin)
 
@@ -17,6 +18,6 @@ usersRouter.put('/setCrime', userController.setCrime)
 
 usersRouter.put('/upgradeRole', userController.updateRole)
 
-usersRouter.delete('/logout', userController.logout)
+usersRouter.delete('/logout', validateDeletion, userController.logout)
 
 module.exports = usersRouter
