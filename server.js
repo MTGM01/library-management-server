@@ -5,6 +5,7 @@ const usersRouter = require('./routes/users.js')
 const booksRouter = require("./routes/books.js")
 const reservedBooksRouter = require("./routes/reservedBooks.js")
 const camelCase = require('./middlewares/camelCaseKeys.js')
+const removeEmptyProperties = require('./middlewares/removeEmptyProperties.js')
 
 // Running and Create Server using ExpressJs
 
@@ -17,6 +18,9 @@ app.use(express.urlencoded())
 
 // camelcase all request body, params and query params properties
 app.use(camelCase)
+
+// delete properties with empty value
+app.use(removeEmptyProperties({ omitZero: true }))
 
 // server logger
 app.use(morgan('dev'))
