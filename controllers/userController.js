@@ -12,8 +12,7 @@ const getOne = async (req, res) => {
 }
 
 const login = async (req, res) => {
-  const user = req.body
-  const { userName, password } = user
+  const { userName, password } = req.body
   const loginResult = await UsersModel.checkUserLogin(userName, password)
   res.status(loginResult.statusCode).json(loginResult.data)
 }

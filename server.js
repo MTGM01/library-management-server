@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const usersRouter = require('./routes/users.js')
 const booksRouter = require("./routes/books.js")
 const reservedBooksRouter = require("./routes/reservedBooks.js")
+const camelCase = require('./middlewares/camelCaseKeys.js')
 
 // Running and Create Server using ExpressJs
 
@@ -13,6 +14,9 @@ const app = express()
 // define request body
 app.use(express.json())
 app.use(express.urlencoded())
+
+// camelcase all request body, params and query params properties
+app.use(camelCase)
 
 // server logger
 app.use(morgan('dev'))

@@ -26,11 +26,10 @@ const checkUserLogin = async (userName, password) => {
         message: "You are logged in successfully",
       }
     }
-  } else {
-    return {
-      statusCode: 401,
-      data: { message: "The user is not authorized !" }
-    }
+  }
+  return {
+    statusCode: 401,
+    data: { message: "The user is not authorized !" }
   }
 }
 
