@@ -54,22 +54,21 @@ const add = async (user) => {
       statusCode: 422,
       data: { messages: errorMessages },
     }
-  } else {
-    const { userName, password, mobile } = user
-    const newUser = {
-      userName,
-      password,
-      mobile,
-      crime: 0,
-      role: "USER",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }
-    const createUserResult = await usersCollection.create(newUser)
-    return {
-      statusCode: 201,
-      data: { result: createUserResult, message: "The User Registered Successfully" },
-    }
+  }
+  const { userName, password, mobile } = user
+  const newUser = {
+    userName,
+    password,
+    mobile,
+    crime: 0,
+    role: "USER",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }
+  const createUserResult = await usersCollection.insertOne(newUser)
+  return {
+    statusCode: 201,
+    data: { result: createUserResult, message: "The User Registered Successfully" },
   }
 }
 

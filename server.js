@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
+const helmet = require('helmet')
 const usersRouter = require('./routes/users.js')
 const booksRouter = require("./routes/books.js")
 const reservedBooksRouter = require("./routes/reservedBooks.js")
@@ -12,9 +13,12 @@ const removeEmptyProperties = require('./middlewares/removeEmptyProperties.js')
 //create server
 const app = express()
 
-// define request body
+// define request body and support urlencoded format data
 app.use(express.json())
 app.use(express.urlencoded())
+
+// secure express http response by setting some headers in response object
+app.use(helmet())
 
 // camelcase all request body, params and query params properties
 app.use(camelCase)
