@@ -18,8 +18,7 @@ const handleReservation = async (req, res) => {
 }
 
 const deliver = async (req, res) => {
-  const bookID = req.query.bookID
-  const userID = req.query.userID
+  const { bookID, userID } = req.query
   const removedReservedBook = await ReservedBooksModel.remove(userID, bookID)
   res.status(removedReservedBook.statusCode).json(removedReservedBook.data)
 }
