@@ -16,7 +16,7 @@ const app = express()
 
 // define request body and support urlencoded format data
 app.use(express.json())
-app.use(express.urlencoded())
+app.use(express.urlencoded({ extended: true }))
 
 // secure express http response by setting some headers in response object
 app.use(helmet())
