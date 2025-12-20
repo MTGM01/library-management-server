@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const path = require('path')
 const helmet = require('helmet')
 const cors = require('cors')
+const homeRouter = require('./routes/templates/page.js')
 const usersRouter = require('./routes/users.js')
 const booksRouter = require("./routes/books.js")
 const reservedBooksRouter = require("./routes/reservedBooks.js")
@@ -36,6 +37,9 @@ app.use(removeEmptyProperties({ omitZero: true }))
 
 // server logger
 app.use(morgan('dev'))
+
+// pages Api
+app.use('/lib/page', homeRouter)
 
 // Users Api
 app.use('/lib/users', usersRouter)
