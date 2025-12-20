@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const helmet = require('helmet')
+const cors = require('cors')
 const usersRouter = require('./routes/users.js')
 const booksRouter = require("./routes/books.js")
 const reservedBooksRouter = require("./routes/reservedBooks.js")
@@ -19,6 +20,9 @@ app.use(express.urlencoded())
 
 // secure express http response by setting some headers in response object
 app.use(helmet())
+
+// access-control-allow to all origins
+app.use(cors())
 
 // camelcase all request body, params and query params properties
 app.use(camelCase)
