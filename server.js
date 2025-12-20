@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
+const path = require('path')
 const helmet = require('helmet')
 const cors = require('cors')
 const usersRouter = require('./routes/users.js')
@@ -17,6 +18,9 @@ const app = express()
 // define request body and support urlencoded format data
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+// determining project static files
+app.use(express.static(path.join(__dirname, 'public')))
 
 // secure express http response by setting some headers in response object
 app.use(helmet())
