@@ -2,20 +2,22 @@ const mongoose = require('mongoose')
 
 const reservedBookSchema = {
     userID: {
-        type: String,
+        type: mongoose.Types.ObjectId,
         required: true,
+        ref: "users"
     },
     bookID: {
-        type: String,
+        type: mongoose.Types.ObjectId,
         required: true,
+        ref: "books"
     },
     createdAt: {
         type: Date,
-        required: true,
+        required: true
     },
     updatedAt: {
         type: Date,
-        required: true,
+        required: true
     }
 }
 
