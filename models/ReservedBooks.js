@@ -5,14 +5,21 @@ const usersCollection = require('../schema/user')
 const reservedBooksCollection = require('../schema/reservedBook')
 
 const getAll = async () => {
-  const reservedBooks = await reservedBooksCollection.find({}, '-createdAt -updatedAt -_id -__v').lean()
-  return { data: { result: reservedBooks } }
+  const reservedBooks = await reservedBooksCollection.find({}, '-createdAt -updatedAt -__v').lean().populate(['userID', 'bookID'], '-createdAt -updatedAt -__v')
+  const mappedreservedBooks = reservedBooks.map(({ _id, userID, bookID }) => {
+    return {
+      _id,
+      user: userID,
+      book: bookID
+    }
+  })
+  return { data: { result: mappedreservedBooks } }
 }
 
 const getOne = async (reservedBookID) => {
   const reservedBookIDValid = isValidObjectId(reservedBookID)
   if (reservedBookIDValid) {
-    const reservedBook = await reservedBooksCollection.findById({ _id: reservedBookID }, '-createdAt -updatedAt -_id -__v')
+    const reservedBook = await reservedBooksCollection.findById({ _id: reservedBookID }, '-createdAt -updatedAt -__v').populate(['userID', 'bookID'], '-createdAt -updatedAt -__v')
     if (!reservedBook) {
       return {
         statusCode: 404,
@@ -23,7 +30,7 @@ const getOne = async (reservedBookID) => {
     }
     return {
       statusCode: 200,
-      data: { result: reservedBook }
+      data: { result: { _id: reservedBook._id, user: reservedBook.userID, book: reservedBook.bookID } }
     }
   }
   return {
