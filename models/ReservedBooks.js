@@ -1,11 +1,11 @@
 require("../configs/DB/db")
 const { isValidObjectId } = require("mongoose")
-const booksCollection = require('../schema/book')
-const usersCollection = require('../schema/user')
+const { booksCollection } = require('../schema/book')
+const { usersCollection } = require('../schema/user')
 const reservedBooksCollection = require('../schema/reservedBook')
 
 const getAll = async () => {
-  const reservedBooks = await reservedBooksCollection.find({}, '-createdAt -updatedAt -__v').lean().populate(['userID', 'bookID'], '-createdAt -updatedAt -__v -reservedBooks')
+  const reservedBooks = await reservedBooksCollection.find({}, '-createdAt -updatedAt -__v').lean()
   const mappedreservedBooks = reservedBooks.map(({ _id, userID, bookID }) => {
     return {
       _id,
@@ -19,7 +19,7 @@ const getAll = async () => {
 const getOne = async (reservedBookID) => {
   const reservedBookIDValid = isValidObjectId(reservedBookID)
   if (reservedBookIDValid) {
-    const reservedBook = await reservedBooksCollection.findById({ _id: reservedBookID }, '-createdAt -updatedAt -__v').populate(['userID', 'bookID'], '-createdAt -updatedAt -__v -reservedBooks')
+    const reservedBook = await reservedBooksCollection.findById({ _id: reservedBookID }, '-createdAt -updatedAt -__v')
     if (!reservedBook) {
       return {
         statusCode: 404,
@@ -50,7 +50,6 @@ const reserve = async (userID, bookID) => {
       isReserved: false,
     })
     if (isBookExistedAndNotReserved) {
-
       await booksCollection.updateOne(
         { _id: bookID },
         {
@@ -66,9 +65,11 @@ const reserve = async (userID, bookID) => {
           reservedBooks: bookID
         }
       })
+      const user = await usersCollection.findById({ _id: userID }, '-createdAt -updatedAt -__v -reservedBooks')
+      const book = await booksCollection.findById({ _id: bookID }, '-createdAt -updatedAt -__v')
       const reservedBook = await reservedBooksCollection.insertOne({
-        userID,
-        bookID,
+        user,
+        book,
         createdAt: new Date(),
         updatedAt: new Date()
       })

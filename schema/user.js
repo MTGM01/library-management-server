@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const userSchema = {
+const userSchema = new mongoose.Schema({
     userName: {
         type: String,
         required: true,
@@ -35,13 +35,14 @@ const userSchema = {
         }
     ],
     createdAt: {
-        type: Date,
-        required: true,
+        type: Date
     },
     updatedAt: {
-        type: Date,
-        required: true,
+        type: Date
     }
-}
+})
 
-module.exports = mongoose.model("users", userSchema)
+module.exports = {
+    usersCollection: mongoose.model("users", userSchema),
+    userSchema
+}

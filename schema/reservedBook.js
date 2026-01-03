@@ -1,23 +1,21 @@
 const mongoose = require('mongoose')
+const { userSchema } = require('../schema/user')
+const { bookSchema } = require('../schema/book')
 
 const reservedBookSchema = {
-    userID: {
-        type: mongoose.Types.ObjectId,
-        required: true,
-        ref: "users"
+    user: {
+        type: userSchema,
+        required: true
     },
-    bookID: {
-        type: mongoose.Types.ObjectId,
-        required: true,
-        ref: "books"
+    book: {
+        type: bookSchema,
+        required: true
     },
     createdAt: {
-        type: Date,
-        required: true
+        type: Date
     },
     updatedAt: {
-        type: Date,
-        required: true
+        type: Date
     }
 }
 

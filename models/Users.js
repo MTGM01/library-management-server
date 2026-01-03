@@ -1,6 +1,6 @@
 require("../configs/DB/db")
 const { isValidObjectId } = require("mongoose")
-const usersCollection = require('../schema/user')
+const { usersCollection } = require('../schema/user')
 const { validateUserRegister } = require("../configs/validator/validators")
 
 const getAll = async () => {

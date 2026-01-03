@@ -1,5 +1,4 @@
-const usersCollection = require("../schema/user")
-
+const { usersCollection } = require("../schema/user")
 
 module.exports = async function validateDeletion(req, res, next) {
     const { userName } = req.body
