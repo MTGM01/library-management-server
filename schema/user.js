@@ -28,6 +28,12 @@ const userSchema = {
         type: String,
         required: true,
     },
+    reservedBooks: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: 'books'
+        }
+    ],
     createdAt: {
         type: Date,
         required: true,
