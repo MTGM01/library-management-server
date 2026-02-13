@@ -17,7 +17,7 @@ const getOne = async (userID) => {
 }
 
 const checkUserLogin = async (userName, password) => {
-  const loggedinUser = await usersCollection.findOne({ userName: userName, password: password })
+  const loggedinUser = await usersCollection.findOne({ userName: userName, password: password }).select('-createdAt -updatedAt -_id -__v')
   if (loggedinUser) {
     return {
       statusCode: 202,
