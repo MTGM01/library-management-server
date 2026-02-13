@@ -1,7 +1,8 @@
 const BooksModel = require("../models/Books")
 
 const getAll = async (req, res) => {
-  const allBooks = await BooksModel.getAll()
+  const { category } = req.query
+  const allBooks = await BooksModel.getAll(category)
   res.json(allBooks.data)
 }
 

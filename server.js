@@ -33,7 +33,7 @@ app.use(cors())
 // app.use(camelCase)
 
 // delete properties with empty value
-app.use(removeEmptyProperties({ omitZero: true }))
+// app.use(removeEmptyProperties({ omitZero: true }))
 
 // server logger
 app.use(morgan('dev'))

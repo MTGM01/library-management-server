@@ -3,8 +3,10 @@ const { isValidObjectId } = require("mongoose")
 const { booksCollection } = require('../schema/book')
 const { validateAddedBook } = require("../configs/validator/validators")
 
-const getAll = async () => {
-  const books = await booksCollection.find({}, '-createdAt -updatedAt -_id -__v').lean()
+const getAll = async (category) => {
+  let books
+  if (category) books = await booksCollection.find({ category }, '-createdAt -updatedAt -_id -__v').lean()
+  else books = await booksCollection.find({}, '-createdAt -updatedAt -_id -__v').lean()
   return { data: { result: books } }
 }
 

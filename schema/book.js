@@ -17,6 +17,18 @@ const bookSchema = new mongoose.Schema({
         type: Boolean,
         required: true
     },
+    ISBN: {
+        type: String,
+        required: true
+    },
+    category: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
     createdAt: {
         type: Date
     },
