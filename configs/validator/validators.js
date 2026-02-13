@@ -36,9 +36,13 @@ const addnewBookSchema = {
         type: 'string',
         required: true,
     },
-    price: {
-        type: 'number',
+    ISBN: {
+        type: 'string',
         required: true,
+    },
+    description: {
+        type: 'string',
+        required: false,
     },
     $$strict: true
 }

@@ -5,8 +5,8 @@ const { validateAddedBook } = require("../configs/validator/validators")
 
 const getAll = async (category) => {
   let books
-  if (category) books = await booksCollection.find({ category }, '-createdAt -updatedAt -_id -__v').lean()
-  else if (!category || category === 'all') books = await booksCollection.find({}, '-createdAt -updatedAt -_id -__v').lean()
+  if (!category || category === 'all') books = await booksCollection.find({}, '-createdAt -updatedAt -_id -__v').lean()
+  else books = await booksCollection.find({ category }, '-createdAt -updatedAt -_id -__v').lean()
   return { data: { result: books } }
 }
 
