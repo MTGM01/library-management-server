@@ -6,14 +6,7 @@ const reservedBooksCollection = require('../schema/reservedBook')
 
 const getAll = async () => {
   const reservedBooks = await reservedBooksCollection.find({}, '-createdAt -updatedAt -__v').lean()
-  const mappedreservedBooks = reservedBooks.map(({ _id, userID, bookID }) => {
-    return {
-      _id,
-      user: userID,
-      book: bookID
-    }
-  })
-  return { data: { result: mappedreservedBooks } }
+  return { data: { result: reservedBooks } }
 }
 
 const getOne = async (reservedBookID) => {
