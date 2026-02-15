@@ -72,8 +72,8 @@ const add = async (user) => {
   }
 }
 
-const remove = async ({ id }) => {
-  const deletedUser = await usersCollection.findByIdAndDelete({ _id: id }).select('userName password mobile')
+const remove = async ({ userName }) => {
+  const deletedUser = await usersCollection.findOneAndDelete({ userName }).select('userName password mobile')
   return {
     statusCode: 200,
     data: {
