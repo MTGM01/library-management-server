@@ -64,8 +64,14 @@ const remove = async (bookID) => {
 }
 
 const create = async (book) => {
+
   const validationResult = validateAddedBook(book)
   if (validationResult !== true) {
+    console.log({
+      result: validationResult,
+      message: "The Book Data is Invalid",
+    },);
+
     return {
       statusCode: 422,
       data: {
@@ -76,7 +82,7 @@ const create = async (book) => {
   }
   const newBook = await booksCollection.insertOne({
     ...book,
-    isReserved: false,
+    availableCount: book.total,
     createdAt: new Date(),
     updatedAt: new Date(),
   })

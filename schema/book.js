@@ -9,8 +9,12 @@ const bookSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    isReserved: {
-        type: Boolean,
+    total: {
+        type: Number,
+        required: true
+    },
+    availableCount: {
+        type: Number,
         required: true
     },
     ISBN: {
@@ -23,7 +27,7 @@ const bookSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: true
+        default: ''
     },
     createdAt: {
         type: Date

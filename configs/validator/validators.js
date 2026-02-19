@@ -40,9 +40,13 @@ const addnewBookSchema = {
         type: 'string',
         required: true,
     },
-    description: {
+    category: {
         type: 'string',
-        required: false,
+        required: true,
+    },
+    total: {
+        type: 'number',
+        required: true,
     },
     $$strict: true
 }
