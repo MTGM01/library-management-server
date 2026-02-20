@@ -25,7 +25,7 @@ const create = async (req, res) => {
 }
 
 const update = async (req, res) => {
-  const updatedBook = await BooksModel.edit(req.body, req.params.id)
+  const updatedBook = await BooksModel.edit(req.body)
   res.status(updatedBook.statusCode).json(updatedBook.data)
 }
 

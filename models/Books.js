@@ -5,8 +5,8 @@ const { validateAddedBook } = require("../configs/validator/validators")
 
 const getAll = async (category) => {
   let books
-  if (!category || category === 'all') books = await booksCollection.find({}, '-createdAt -updatedAt -_id -__v').lean()
-  else books = await booksCollection.find({ category }, '-createdAt -updatedAt -_id -__v').lean()
+  if (!category || category === 'all') books = await booksCollection.find({}, '-createdAt -updatedAt -__v').lean()
+  else books = await booksCollection.find({ category }, '-createdAt -updatedAt -__v').lean()
   return { data: { result: books } }
 }
 
@@ -90,10 +90,10 @@ const create = async (book) => {
   }
 }
 
-const edit = async (book, bookID) => {
-  const bookIDValid = isValidObjectId(bookID)
+const edit = async (book) => {
+  const bookIDValid = isValidObjectId(book.id)
   if (bookIDValid) {
-    const editedBook = await booksCollection.findByIdAndUpdate({ _id: bookID }, { $set: { ...book, createdAt: new Date(), updatedAt: new Date() } })
+    const editedBook = await booksCollection.findByIdAndUpdate({ _id: book.id }, { $set: { ...book, updatedAt: new Date() } })
     if (!editedBook) {
       return {
         statusCode: 404,

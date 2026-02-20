@@ -13,6 +13,6 @@ booksRouter.delete('/remove/:id', bookController.remove)
 
 booksRouter.post('/create', bookController.create)
 
-booksRouter.put('/update/:id', bookController.update)
+booksRouter.put('/update', bookController.update)
 
 module.exports = booksRouter
