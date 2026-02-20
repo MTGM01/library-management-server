@@ -67,11 +67,6 @@ const create = async (book) => {
 
   const validationResult = validateAddedBook(book)
   if (validationResult !== true) {
-    console.log({
-      result: validationResult,
-      message: "The Book Data is Invalid",
-    },);
-
     return {
       statusCode: 422,
       data: {
