@@ -13,7 +13,7 @@ const getAll = async (category) => {
 const getOne = async (bookID) => {
   const bookIDValid = isValidObjectId(bookID)
   if (bookIDValid) {
-    const book = await booksCollection.findById({ _id: bookID }, '-createdAt -updatedAt -_id -__v')
+    const book = await booksCollection.findById({ _id: bookID }, '-createdAt -updatedAt -__v')
     if (!book) {
       return {
         statusCode: 404,

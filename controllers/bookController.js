@@ -13,7 +13,7 @@ const getOne = async (req, res) => {
 }
 
 const remove = async (req, res) => {
-  const removedBook = await BooksModel.remove(req.params.id)
+  const removedBook = await BooksModel.remove(req.body.id)
   res.statusCode = removedBook.statusCode
   res.json(removedBook.data)
 }

@@ -9,7 +9,7 @@ booksRouter.get('', bookController.getAll)
 
 booksRouter.get('/:id', bookController.getOne)
 
-booksRouter.delete('/remove/:id', bookController.remove)
+booksRouter.delete('/remove', bookController.remove)
 
 booksRouter.post('/create', bookController.create)
 
