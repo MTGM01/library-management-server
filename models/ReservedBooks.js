@@ -40,14 +40,14 @@ const reserve = async (userID, bookID) => {
   if (userIDValid && bookIDValid) {
     const isBookExistedAndNotReserved = await booksCollection.findOne({
       _id: bookID,
-      isReserved: false,
+      availableCount: { $ne: 0 },
     })
     if (isBookExistedAndNotReserved) {
       await booksCollection.updateOne(
         { _id: bookID },
         {
-          $set: {
-            isReserved: true
+          $inc: {
+            availableCount: -1
           },
           $currentDate: {
             updatedAt: 1
