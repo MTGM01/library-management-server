@@ -4,12 +4,12 @@ const { usersCollection } = require('../schema/user')
 const { validateUserRegister } = require("../configs/validator/validators")
 
 const getAll = async () => {
-  const users = await usersCollection.find({}, '-createdAt -updatedAt -__v').populate('reservedBooks', '-__v').lean()
+  const users = await usersCollection.find({}, '-updatedAt -__v').populate('reservedBooks', '-__v').lean()
   return { data: { result: users } }
 }
 
 const getOne = async (userID) => {
-  const user = await usersCollection.findById({ _id: userID }, '-createdAt -updatedAt -__v').populate('reservedBooks', '-__v')
+  const user = await usersCollection.findById({ _id: userID }, '-updatedAt -__v').populate('reservedBooks', '-__v')
   return {
     statusCode: 200,
     data: { result: user, message: 'ok' }
