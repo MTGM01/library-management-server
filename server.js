@@ -50,6 +50,20 @@ app.use('/lib/books', booksRouter)
 // Reserved Books Api
 app.use('/lib/reservedBooks', reservedBooksRouter)
 
+// multer error handler
+app.use((err, req, res, next) => {
+  if (err instanceof require('multer').MulterError) {
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({ message: "File size exceeds 5MB limit" })
+    }
+    return res.status(400).json({ message: err.message })
+  }
+  if (err.message === 'Only image files are allowed') {
+    return res.status(400).json({ message: err.message })
+  }
+  next(err)
+})
+
 app.listen(process.env.PORT, (err) => {
   if (err) throw err
   console.log(`Starting Server on Port ${process.env.PORT}`)

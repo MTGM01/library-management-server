@@ -60,6 +60,14 @@ const addnewBookSchema = {
         type: 'number',
         required: true,
     },
+    coverImage: {
+        type: 'string',
+        optional: true,
+    },
+    description: {
+        type: 'string',
+        optional: true,
+    },
     $$strict: true
 }
 

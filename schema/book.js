@@ -29,6 +29,10 @@ const bookSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
+    coverImage: {
+        type: String,
+        default: ''
+    },
     createdAt: {
         type: Date
     },
