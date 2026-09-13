@@ -1,6 +1,18 @@
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
+    firstName: {
+        type: String,
+        required: true,
+        minLength: 2,
+        maxLength: 30,
+    },
+    lastName: {
+        type: String,
+        required: true,
+        minLength: 2,
+        maxLength: 30,
+    },
     userName: {
         type: String,
         required: true,
@@ -38,6 +50,11 @@ const userSchema = new mongoose.Schema({
     },
     updatedAt: {
         type: Date
+    },
+    status: {
+        type: String,
+        enum: ['ACTIVE', 'BLOCK'],
+        default: 'ACTIVE'
     }
 })
 

@@ -14,9 +14,13 @@ usersRouter.post('/login', userController.login)
 
 usersRouter.post('/register', userController.register)
 
+usersRouter.post('/admin/add', userController.adminAddUser)
+
 usersRouter.put('/setCrime', userController.setCrime)
 
 usersRouter.put('/upgradeRole', userController.updateRole)
+
+usersRouter.put('/setStatus', userController.setStatus)
 
 usersRouter.delete('/logout', validateDeletion, userController.logout)
 

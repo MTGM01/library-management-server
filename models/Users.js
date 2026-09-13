@@ -1,15 +1,15 @@
 require("../configs/DB/db")
 const { isValidObjectId } = require("mongoose")
 const { usersCollection } = require('../schema/user')
-const { validateUserRegister } = require("../configs/validator/validators")
+const { validateUserRegister, validateAdminAddUser } = require("../configs/validator/validators")
 
 const getAll = async () => {
-  const users = await usersCollection.find({}, '-updatedAt -__v').populate('reservedBooks', '-__v').lean()
+  const users = await usersCollection.find({}, '-__v').populate('reservedBooks', '-__v').lean()
   return { data: { result: users } }
 }
 
 const getOne = async (userID) => {
-  const user = await usersCollection.findById({ _id: userID }, '-updatedAt -__v').populate('reservedBooks', '-__v')
+  const user = await usersCollection.findById({ _id: userID }, '-__v').populate('reservedBooks', '-__v')
   return {
     statusCode: 200,
     data: { result: user, message: 'ok' }
@@ -55,13 +55,16 @@ const add = async (user) => {
       data: { messages: errorMessages },
     }
   }
-  const { userName, password, mobile } = user
+  const { firstName, lastName, userName, password, mobile } = user
   const newUser = {
+    firstName,
+    lastName,
     userName,
     password,
     mobile,
     crime: 0,
     role: "USER",
+    status: "ACTIVE",
     createdAt: new Date(),
     updatedAt: new Date(),
   }
@@ -69,6 +72,48 @@ const add = async (user) => {
   return {
     statusCode: 201,
     data: { result: createUserResult, message: "The User Registered Successfully" },
+  }
+}
+
+const adminAdd = async (user) => {
+  const validationResult = validateAdminAddUser(user)
+  const existedUser = await usersCollection.findOne({
+    $or: [
+      { userName: user.userName },
+      { mobile: user.mobile }
+    ]
+  })
+
+  if (existedUser) {
+    return {
+      statusCode: 409,
+      data: { message: "The User Is Registered Before !" },
+    }
+  } else if (validationResult !== true) {
+    const errorMessages = validationResult.map((validation) => validation.message)
+    return {
+      statusCode: 422,
+      data: { messages: errorMessages },
+    }
+  }
+  const { firstName, lastName, userName, password, mobile, role, status } = user
+  const newUser = {
+    firstName,
+    lastName,
+    userName,
+    password,
+    mobile,
+    crime: 0,
+    role: role || "USER",
+    status: status || "ACTIVE",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }
+  const createUserResult = await usersCollection.insertOne(newUser)
+  const createdUser = await usersCollection.findById(createUserResult._id, '-__v').lean()
+  return {
+    statusCode: 201,
+    data: { result: createdUser, message: "The User Created Successfully" },
   }
 }
 
@@ -157,12 +202,52 @@ const editRole = async ({ id, role }) => {
   }
 }
 
+const editStatus = async ({ id, status }) => {
+  const userIDValid = isValidObjectId(id)
+  if (userIDValid) {
+    const desiredUser = await usersCollection.findByIdAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          status,
+        },
+        $currentDate: {
+          updatedAt: 1
+        }
+      },
+      { new: true }
+    )
+    if (desiredUser) {
+      return {
+        statusCode: 200,
+        data: {
+          result: desiredUser,
+          message: "The User Status Updated Successfully",
+        }
+      }
+    }
+    return {
+      statusCode: 404,
+      data: {
+        message: "The User not Found",
+      }
+    }
+  } else {
+    return {
+      statusCode: 422,
+      data: { message: "The UserID Is Invalid !" },
+    }
+  }
+}
+
 module.exports = {
   getAll,
   getOne,
   checkUserLogin,
   add,
+  adminAdd,
   editRole,
   editCrime,
+  editStatus,
   remove,
 }

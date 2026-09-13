@@ -27,6 +27,11 @@ const register = async (req, res) => {
   res.status(registerResponse.statusCode).json(registerResponse.data)
 }
 
+const adminAddUser = async (req, res) => {
+  const addResponse = await UsersModel.adminAdd(req.body)
+  res.status(addResponse.statusCode).json(addResponse.data)
+}
+
 const setCrime = async (req, res) => {
   const userWithUpdatedCrime = await UsersModel.editCrime(req.body)
   res.status(userWithUpdatedCrime.statusCode).json(userWithUpdatedCrime.data)
@@ -37,12 +42,19 @@ const updateRole = async (req, res) => {
   res.status(newUserRole.statusCode).json(newUserRole.data)
 }
 
+const setStatus = async (req, res) => {
+  const userWithUpdatedStatus = await UsersModel.editStatus(req.body)
+  res.status(userWithUpdatedStatus.statusCode).json(userWithUpdatedStatus.data)
+}
+
 module.exports = {
   getAll,
   getOne,
   login,
   logout,
   register,
+  adminAddUser,
   updateRole,
   setCrime,
+  setStatus,
 }
