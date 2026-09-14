@@ -11,6 +11,12 @@ const getOne = async (req, res) => {
   res.status(user.statusCode).json(user.data)
 }
 
+const getStatus = async (req, res) => {
+  const { id } = req.params
+  const result = await UsersModel.getStatus(id)
+  res.status(result.statusCode).json(result.data)
+}
+
 const login = async (req, res) => {
   const { userName, password } = req.body
   const loginResult = await UsersModel.checkUserLogin(userName, password)
@@ -50,6 +56,7 @@ const setStatus = async (req, res) => {
 module.exports = {
   getAll,
   getOne,
+  getStatus,
   login,
   logout,
   register,

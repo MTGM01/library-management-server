@@ -8,6 +8,8 @@ const validateDeletion = require('../middlewares/validateUserDeletion')
 
 usersRouter.get('', userController.getAll)
 
+usersRouter.get('/status/:id', userController.getStatus)
+
 usersRouter.get('/:id', validateAdmin, userController.getOne)
 
 usersRouter.post('/login', userController.login)

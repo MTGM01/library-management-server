@@ -16,6 +16,20 @@ const getOne = async (userID) => {
   }
 }
 
+const getStatus = async (userID) => {
+  const user = await usersCollection.findById(userID).select('status').lean()
+  if (!user) {
+    return {
+      statusCode: 404,
+      data: { message: "The User not Found" },
+    }
+  }
+  return {
+    statusCode: 200,
+    data: { result: { _id: user._id, status: user.status }, message: 'ok' }
+  }
+}
+
 const checkUserLogin = async (userName, password) => {
   const loggedinUser = await usersCollection.findOne({ userName: userName, password: password }).select('-createdAt -updatedAt -__v')
   if (loggedinUser) {
@@ -243,6 +257,7 @@ const editStatus = async ({ id, status }) => {
 module.exports = {
   getAll,
   getOne,
+  getStatus,
   checkUserLogin,
   add,
   adminAdd,
