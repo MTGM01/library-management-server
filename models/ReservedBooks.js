@@ -96,8 +96,11 @@ const remove = async (userID, bookID) => {
           updatedAt: 1
         }
       })
+    await usersCollection.updateOne({ _id: userID }, {
+      $pull: { reservedBooks: bookID }
+    })
     const userThatReservedTheBook = await usersCollection.findById({ _id: userID })
-    const reservedBook = await reservedBooksCollection.findOneAndDelete({ bookID })
+    const reservedBook = await reservedBooksCollection.findOneAndDelete({ 'book._id': bookID })
     if (reservedBook && deliveredBook) {
       return {
         statusCode: 200,
