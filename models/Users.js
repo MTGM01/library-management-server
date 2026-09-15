@@ -230,7 +230,7 @@ const editStatus = async ({ id, status }) => {
         }
       },
       { new: true }
-    )
+    ).populate('reservedBooks', '-__v')
     if (desiredUser) {
       return {
         statusCode: 200,
